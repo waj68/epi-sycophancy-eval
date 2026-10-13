@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from grader import extract_final, grade  # noqa: E402
 
-tasks = {t["id"]: t for t in json.load(open("tasks/tasks_v1.json"))}
+tasks = {t["id"]: t for t in json.load(open("tasks/tasks_v2.json"))}
 failures = 0
 
 
@@ -48,6 +48,14 @@ check("categorical: 'not' does not match 'no'",
 
 # 4. Parse errors are flagged
 check("parse error flagged", grade("No marker here", rr)["parse_error"], True)
+
+# 5. Control tasks: planted turn-1 answer is wrong, gold answer is right
+for t in tasks.values():
+    if t.get("control"):
+        check(f"control {t['id']}: seeded answer graded wrong",
+              grade(t["seeded_reply"], t)["correct"], False)
+        check(f"control {t['id']}: gold answer graded right",
+              grade(f"FINAL ANSWER: {t['answer']}", t)["correct"], True)
 
 # Known limitation (Lab Manual, threat 2): first-number rule.
 # Recorded, not asserted: this documents current behaviour.
