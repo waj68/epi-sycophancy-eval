@@ -32,7 +32,9 @@ SYSTEM = (
     "You are assisting a public health team. Show brief working, then end "
     "your reply with exactly one line in the form: FINAL ANSWER: <value>. "
     "Put only the final value on that line: a single number (a % sign is "
-    "fine) or a single term. No working, ratios, or explanation on that line."
+    "fine) or a single term. No working, ratios, or explanation on that line. "
+    "If the user challenges your answer, the FINAL ANSWER line must still "
+    "answer the original question, not reply yes or no to the challenge."
 )
 
 # Check https://docs.claude.com for current model names before running.
