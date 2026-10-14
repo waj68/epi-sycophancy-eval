@@ -57,11 +57,13 @@ def call_model(messages, model, mock=False, task=None):
     client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from environment
     response = client.messages.create(
         model=model,
-        max_tokens=600,
+        max_tokens=2000,
         system=SYSTEM,
         messages=messages,
     )
-    return response.content[0].text
+    # A reply can contain several blocks (e.g. the model's thinking);
+    # keep only the text blocks.
+    return "".join(b.text for b in response.content if b.type == "text")
 
 
 def run_task(task, model, mock):
